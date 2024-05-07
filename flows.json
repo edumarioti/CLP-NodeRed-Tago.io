@@ -1,0 +1,1116 @@
+[
+    {
+        "id": "1b8fd5a30a91a1a3",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "32c45973518818fa",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Numero de Falhas",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 710,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "7088913e5325147a",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Tempo de Produção",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 700,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "693cb37ab1e710a6",
+        "type": "ui_gauge",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "group": "8323dd7938704e85",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Disponibilidade",
+        "label": "%",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "100",
+        "colors": [
+            "#e70d0d",
+            "#e6e600",
+            "#23cf17"
+        ],
+        "seg1": "98",
+        "seg2": "99",
+        "x": 720,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "19f7450d9732b720",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Tempo em Falha",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 710,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "c01bc26721790622",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Tempo Disponivel",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 710,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "af0230bfb375f502",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataTempoEmProducao",
+        "func": "var horas = msg.payload.Hoje_TempoEmProducao_Horas;\nvar minutos = msg.payload.Hoje_TempoEmProducao_Minutos;\nvar segundos = msg.payload.Hoje_TempoEmProducao_Segundos;\n\nhoras = (\"00\" + horas).slice(-2);\nminutos = (\"00\" + minutos).slice(-2);\nsegundos = (\"00\" + segundos).slice(-2);\n\nvar TempoEmProducao = horas + \":\" + minutos + \":\" + segundos;\nmsg.payload = TempoEmProducao\nglobal.set('TempoEmProducao', TempoEmProducao)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 260,
+        "wires": [
+            [
+                "7088913e5325147a"
+            ]
+        ]
+    },
+    {
+        "id": "3dc03840c55852c0",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataTempoEmFalha",
+        "func": "\nvar horas = msg.payload.Hoje_TempoEmFalha_Horas;\nvar minutos = msg.payload.Hoje_TempoEmFalha_Minutos;\nvar segundos = msg.payload.Hoje_TempoEmFalha_Segundos;\n\nhoras = (\"00\" + horas).slice(-2);\nminutos = (\"00\" + minutos).slice(-2);\nsegundos = (\"00\" + segundos).slice(-2);\n\nvar TempoEmFalha = horas + \":\" + minutos + \":\" + segundos;\nmsg.payload = TempoEmFalha\nglobal.set('TempoEmFalha', TempoEmFalha)\n\nreturn msg\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 300,
+        "wires": [
+            [
+                "19f7450d9732b720"
+            ]
+        ]
+    },
+    {
+        "id": "2ba2a707b171532a",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataDisponibilidade",
+        "func": "var Disponibilidade = msg.payload.Hoje_Disponibilidade;\nDisponibilidade = parseFloat(Disponibilidade.toFixed(2));\n\nmsg.payload = Disponibilidade\nglobal.set('Disponibilidade', Disponibilidade)\n\nreturn msg\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 460,
+        "wires": [
+            [
+                "693cb37ab1e710a6"
+            ]
+        ]
+    },
+    {
+        "id": "bd1c94a4e5d94d52",
+        "type": "ui_chart",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "Vazão de Produção ",
+        "group": "279b404a7d721840",
+        "order": 1,
+        "width": 13,
+        "height": 7,
+        "label": "Vazão de Produção: {{msg.payload}}m³/h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "0",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "18",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#08f3f7",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 710,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "777bc223b689d3e1",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "MTTR",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 750,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "1f11eb94d21cd7d6",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "MTBF",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 750,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "c327bc9a84eafbed",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataMTBF",
+        "func": "var horas = msg.payload.Hoje_MTBF_Horas;\nvar minutos = msg.payload.Hoje_MTBF_Minutos;\nvar segundos = msg.payload.Hoje_MTBF_Segundos;\n\nhoras = (\"00\" + horas).slice(-2);\nminutos = (\"00\" + minutos).slice(-2);\nsegundos = (\"00\" + segundos).slice(-2);\n\nvar MTBF = horas + \":\" + minutos + \":\" + segundos;\nmsg.payload = MTBF\nglobal.set('MTBF', MTBF)\n\nreturn msg\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 340,
+        "wires": [
+            [
+                "1f11eb94d21cd7d6"
+            ]
+        ]
+    },
+    {
+        "id": "49a1b34b5c610cec",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataMTTR",
+        "func": "var horas = msg.payload.Hoje_MTTR_Horas;\nvar minutos = msg.payload.Hoje_MTTR_Minutos;\nvar segundos = msg.payload.Hoje_MTTR_Segundos;\n\nhoras = (\"00\" + horas).slice(-2);\nminutos = (\"00\" + minutos).slice(-2);\nsegundos = (\"00\" + segundos).slice(-2);\n\nvar MTTR = horas + \":\" + minutos + \":\" + segundos;\nmsg.payload = MTTR\nglobal.set('MTTR', MTTR)\n\nreturn msg\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 380,
+        "wires": [
+            [
+                "777bc223b689d3e1"
+            ]
+        ]
+    },
+    {
+        "id": "98573b7a1fe0ded2",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataFalha",
+        "func": "var Falha = msg.payload.Hoje_Disponibilidade - 100;\nFalha = Falha *(-1)\n\nFalha = parseFloat(Falha.toFixed(2));\n\nmsg.payload = Falha\nglobal.set('Falha', Falha)\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 500,
+        "wires": [
+            [
+                "b45011ba16c89101"
+            ]
+        ]
+    },
+    {
+        "id": "b45011ba16c89101",
+        "type": "ui_gauge",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "group": "31cd4afe116d9645",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Falha",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "5",
+        "colors": [
+            "#00b32d",
+            "#e6e600",
+            "#ff2929"
+        ],
+        "seg1": "1",
+        "seg2": "2",
+        "x": 750,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "e5b56afca6c74371",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Estado Atual",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 730,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a6ab488be2777608",
+        "type": "s7 out",
+        "z": "1b8fd5a30a91a1a3",
+        "endpoint": "d8a7b580027c2eb8",
+        "variable": "Liga",
+        "name": "",
+        "x": 1730,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "b75ef2747dada001",
+        "type": "ui_button",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "group": "531e1ad8cc0f30d0",
+        "order": 2,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Inicia",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "Green",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1550,
+        "y": 180,
+        "wires": [
+            [
+                "a6ab488be2777608"
+            ]
+        ]
+    },
+    {
+        "id": "16d26491d05264cb",
+        "type": "ui_button",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "group": "531e1ad8cc0f30d0",
+        "order": 4,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Para",
+        "tooltip": "off",
+        "color": "",
+        "bgcolor": "red",
+        "icon": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1550,
+        "y": 240,
+        "wires": [
+            [
+                "a6ab488be2777608"
+            ]
+        ]
+    },
+    {
+        "id": "93298bbbaba720d0",
+        "type": "ui_button",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "group": "3693543db8a26de2",
+        "order": 4,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Em Falha",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "red",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1560,
+        "y": 300,
+        "wires": [
+            [
+                "f6a1a5370de7796c"
+            ]
+        ]
+    },
+    {
+        "id": "c301b1711532f343",
+        "type": "ui_button",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "group": "3693543db8a26de2",
+        "order": 2,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Sem Falha",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "blue",
+        "icon": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1570,
+        "y": 360,
+        "wires": [
+            [
+                "f6a1a5370de7796c"
+            ]
+        ]
+    },
+    {
+        "id": "f6a1a5370de7796c",
+        "type": "s7 out",
+        "z": "1b8fd5a30a91a1a3",
+        "endpoint": "d8a7b580027c2eb8",
+        "variable": "Falha",
+        "name": "",
+        "x": 1730,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "dbff9a3f763cdafd",
+        "type": "mqtt out",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "topic": "Indicadores",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5c7ec9b7acabec36",
+        "x": 730,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "f99016fd6153fe29",
+        "type": "mqtt out",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "",
+        "topic": "VariaveisDeProducao",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5c7ec9b7acabec36",
+        "x": 700,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "66c352f16badd489",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataNumeroDeFalhas",
+        "func": "var NumeroDeFalhas = msg.payload.Hoje_NumeroDeFalhas;\nNumeroDeFalhas = parseFloat(NumeroDeFalhas.toFixed(2));\n\nmsg.payload = NumeroDeFalhas\nglobal.set('NumeroDeFalhas', NumeroDeFalhas)\n\nreturn msg\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 420,
+        "wires": [
+            [
+                "32c45973518818fa"
+            ]
+        ]
+    },
+    {
+        "id": "0bd277bf53b28e2f",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataIndicadoresMQTT",
+        "func": "msg.payload = [\n    {\n        \"variable\": \"TempoDisponivel\",\n        \"unit\": \"hh:mm:ss\",\n        \"value\": global.get('TempoDisponivel')\n    },\n    {\n        \"variable\": \"TempoEmProducao\",\n        \"unit\": \"hh:mm:ss\",\n        \"value\": global.get('TempoEmProducao')\n    },\n        {\n        \"variable\": \"TempoEmFalha\",\n        \"unit\": \"hh:mm:ss\",\n        \"value\": global.get('TempoEmFalha')\n    },\n        {\n        \"variable\": \"MTBF\",\n        \"unit\": \"hh:mm:ss\",\n        \"value\": global.get('MTBF')\n    },\n        {\n        \"variable\": \"MTTR\",\n        \"unit\": \"hh:mm:ss\",\n        \"value\": global.get('MTTR')\n    },\n    {\n        \"variable\": \"NumeroDeFalhas\",\n        \"unit\": \"\",\n        \"value\": global.get('NumeroDeFalhas')\n    },\n        {\n        \"variable\": \"Disponibilidade\",\n        \"unit\": \"%\",\n        \"value\": global.get('Disponibilidade')\n    },\n        {\n        \"variable\": \"Falha\",\n        \"unit\": \"%\",\n        \"value\": global.get('Falha')\n        }\n];\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 580,
+        "wires": [
+            [
+                "dbff9a3f763cdafd",
+                "52522e27d619c14b"
+            ]
+        ]
+    },
+    {
+        "id": "52522e27d619c14b",
+        "type": "debug",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "Indicadores",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "10d7b84a7e69f5d4",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataTempoDisponivel",
+        "func": "var horas = msg.payload.Hoje_TempoDisponivel_Horas;\nvar minutos = msg.payload.Hoje_TempoDisponivel_Minutos;\nvar segundos = msg.payload.Hoje_TempoDisponivel_Segundos;\n\nhoras = (\"00\" + horas).slice(-2);\nminutos = (\"00\" + minutos).slice(-2);\nsegundos = (\"00\" + segundos).slice(-2);\n\nvar TempoDisponivel = horas + \":\" + minutos + \":\" + segundos;\nmsg.payload = TempoDisponivel\nglobal.set('TempoDisponivel', TempoDisponivel)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "c01bc26721790622"
+            ]
+        ]
+    },
+    {
+        "id": "0190c53042705b9b",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataVazaoDeProducao",
+        "func": "var VazaoDeProducao = msg.payload.TempoReal_VazaoDeProducao;\n\nVazaoDeProducao = parseFloat(VazaoDeProducao.toFixed(2));\n\nmsg.payload = VazaoDeProducao;\nglobal.set('VazaoDeProducao', VazaoDeProducao)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 100,
+        "wires": [
+            [
+                "bd1c94a4e5d94d52"
+            ]
+        ]
+    },
+    {
+        "id": "7d16a9821dd34d02",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataEstadoAtual",
+        "func": "var EstadoAtual = \"\"\n\nif (msg.payload.TempoReal_LinhaEmFalha) {\n    EstadoAtual = \"Falha\"; \n} else if (msg.payload.TempoReal_LinhaRodando) {\n    EstadoAtual = \"Produzindo\";\n} else {\n    EstadoAtual = \"Disponível\";\n}\nmsg.payload =EstadoAtual;\nglobal.set('EstadoAtual', EstadoAtual)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 180,
+        "wires": [
+            [
+                "e5b56afca6c74371"
+            ]
+        ]
+    },
+    {
+        "id": "12280c17faa1cda3",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataVariaveisMQTT",
+        "func": "msg.payload = [\n    {\n        \"variable\": \"VazaoDeProducao\",\n        \"unit\": \"m³/h\",\n        \"value\": global.get('VazaoDeProducao')\n    }, \n    {\n        \"variable\": \"NivelTanque\",\n        \"unit\": \"%\",\n        \"value\": global.get('NivelTanque')\n    }, \n    {\n        \"variable\": \"EstadoAtual\",\n        \"unit\": \"\",\n        \"value\": global.get('EstadoAtual')\n    },\n    {\n        \"variable\": \"TotalizadorProducao\",\n        \"unit\": \"m³\",\n        \"value\": global.get('TotalizadorProducao')\n    },];\n\nreturn msg\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 620,
+        "wires": [
+            [
+                "f99016fd6153fe29",
+                "060dcefcc82b166b"
+            ]
+        ]
+    },
+    {
+        "id": "060dcefcc82b166b",
+        "type": "debug",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "VariaveisDeProducao",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "d0f0022031b60154",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataTotalizadorProducao",
+        "func": "var TotalizadorProducao = msg.payload.Hoje_TotalizadorDeProducao;\nTotalizadorProducao = parseFloat(TotalizadorProducao.toFixed(2));\n\nmsg.payload = TotalizadorProducao;\nglobal.set('TotalizadorProducao', TotalizadorProducao);\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 540,
+        "wires": [
+            [
+                "0a91126b37954d99"
+            ]
+        ]
+    },
+    {
+        "id": "0a91126b37954d99",
+        "type": "ui_text",
+        "z": "1b8fd5a30a91a1a3",
+        "group": "b2d95ac193270da4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Totalizador Producao",
+        "format": "{{msg.payload}}m³",
+        "layout": "row-spread",
+        "x": 700,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "cbeaedbaf8c57103",
+        "type": "debug",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "PLC",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "5674aa4385179151",
+        "type": "ui_chart",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "Nível do Tanque ",
+        "group": "279b404a7d721840",
+        "order": 1,
+        "width": "3",
+        "height": 7,
+        "label": "Nível do Tanque{{msg.payload}}%",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "0",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#a308f7",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 720,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7adb192b38ead620",
+        "type": "function",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "FormataNivelTanque",
+        "func": "var NivelTanque = msg.payload.TempoReal_NivelTanque;\n\nNivelTanque = parseFloat(NivelTanque.toFixed(2));\n\nmsg.payload = NivelTanque;\nglobal.set('NivelTanque', NivelTanque)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 140,
+        "wires": [
+            [
+                "5674aa4385179151"
+            ]
+        ]
+    },
+    {
+        "id": "3c315db09d15095f",
+        "type": "s7 in",
+        "z": "1b8fd5a30a91a1a3",
+        "endpoint": "d8a7b580027c2eb8",
+        "mode": "all",
+        "variable": "Hoje-TempoDisponivel-Horas",
+        "diff": false,
+        "name": "",
+        "x": 100,
+        "y": 340,
+        "wires": [
+            [
+                "0190c53042705b9b",
+                "7d16a9821dd34d02",
+                "10d7b84a7e69f5d4",
+                "af0230bfb375f502",
+                "3dc03840c55852c0",
+                "c327bc9a84eafbed",
+                "49a1b34b5c610cec",
+                "66c352f16badd489",
+                "2ba2a707b171532a",
+                "98573b7a1fe0ded2",
+                "d0f0022031b60154",
+                "cbeaedbaf8c57103",
+                "0bd277bf53b28e2f",
+                "12280c17faa1cda3",
+                "7adb192b38ead620"
+            ]
+        ]
+    },
+    {
+        "id": "5ceb9fd2fe02b501",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "531e1ad8cc0f30d0",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "686b60045d272045",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "531e1ad8cc0f30d0",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "1d59d6a5d1e41996",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "531e1ad8cc0f30d0",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "b2c739b01dc7be32",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "3693543db8a26de2",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "51c36904b67e2360",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "3693543db8a26de2",
+        "order": 1,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "afd476e9c77f51d9",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "3693543db8a26de2",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "146b118b69ca0980",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "3693543db8a26de2",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "04e5415e277d6c33",
+        "type": "ui_spacer",
+        "z": "1b8fd5a30a91a1a3",
+        "name": "spacer",
+        "group": "531e1ad8cc0f30d0",
+        "order": 1,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "b2d95ac193270da4",
+        "type": "ui_group",
+        "name": "Indicadores",
+        "tab": "eae27e11d83ca8bb",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "8323dd7938704e85",
+        "type": "ui_group",
+        "name": "Disponibilidade",
+        "tab": "eae27e11d83ca8bb",
+        "order": 3,
+        "disp": true,
+        "width": "11",
+        "collapse": false
+    },
+    {
+        "id": "279b404a7d721840",
+        "type": "ui_group",
+        "name": "Linha de Produção",
+        "tab": "eae27e11d83ca8bb",
+        "order": 1,
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "31cd4afe116d9645",
+        "type": "ui_group",
+        "name": "Falha",
+        "tab": "eae27e11d83ca8bb",
+        "order": 5,
+        "disp": true,
+        "width": "11",
+        "collapse": false
+    },
+    {
+        "id": "d8a7b580027c2eb8",
+        "type": "s7 endpoint",
+        "transport": "iso-on-tcp",
+        "address": "192.168.3.100",
+        "port": "102",
+        "rack": "0",
+        "slot": "1",
+        "localtsaphi": "01",
+        "localtsaplo": "00",
+        "remotetsaphi": "01",
+        "remotetsaplo": "00",
+        "connmode": "rack-slot",
+        "adapter": "",
+        "busaddr": "2",
+        "cycletime": "5000",
+        "timeout": "10000",
+        "name": "PLC-1500",
+        "vartable": [
+            {
+                "addr": "DB4,INT0",
+                "name": "Hoje_TempoEmProducao_Horas"
+            },
+            {
+                "addr": "DB4,INT2",
+                "name": "Hoje_TempoEmProducao_Minutos"
+            },
+            {
+                "addr": "DB4,INT4",
+                "name": "Hoje_TempoEmProducao_Segundos"
+            },
+            {
+                "addr": "DB4,INT6",
+                "name": "Hoje_TempoEmFalha_Horas"
+            },
+            {
+                "addr": "DB4,INT8",
+                "name": "Hoje_TempoEmFalha_Minutos"
+            },
+            {
+                "addr": "DB4,INT10",
+                "name": "Hoje_TempoEmFalha_Segundos"
+            },
+            {
+                "addr": "DB4,INT12",
+                "name": "Hoje_TempoDisponivel_Horas"
+            },
+            {
+                "addr": "DB4,INT14",
+                "name": "Hoje_TempoDisponivel_Minutos"
+            },
+            {
+                "addr": "DB4,INT16",
+                "name": "Hoje_TempoDisponivel_Segundos"
+            },
+            {
+                "addr": "DB4,INT18",
+                "name": "Hoje_NumeroDeFalhas"
+            },
+            {
+                "addr": "DB4,R20",
+                "name": "Hoje_TotalizadorDeProducao"
+            },
+            {
+                "addr": "DB4,R24",
+                "name": "Hoje_Disponibilidade"
+            },
+            {
+                "addr": "DB4,INT28",
+                "name": "Hoje_MTBF_Horas"
+            },
+            {
+                "addr": "DB4,INT30",
+                "name": "Hoje_MTBF_Minutos"
+            },
+            {
+                "addr": "DB4,INT32",
+                "name": "Hoje_MTBF_Segundos"
+            },
+            {
+                "addr": "DB4,INT34",
+                "name": "Hoje_MTTR_Horas"
+            },
+            {
+                "addr": "DB4,INT36",
+                "name": "Hoje_MTTR_Minutos"
+            },
+            {
+                "addr": "DB4,INT38",
+                "name": "Hoje_MTTR_Segundos"
+            },
+            {
+                "addr": "DB4,R888",
+                "name": "TempoReal_VazaoDeProducao"
+            },
+            {
+                "addr": "DB4,R892",
+                "name": "TempoReal_NivelTanque"
+            },
+            {
+                "addr": "DB4,X896.0",
+                "name": "TempoReal_LinhaRodando"
+            },
+            {
+                "addr": "DB4,X896.1",
+                "name": "TempoReal_LinhaDisponivel"
+            },
+            {
+                "addr": "DB4,X896.2",
+                "name": "TempoReal_LinhaEmFalha"
+            },
+            {
+                "addr": "M10.2",
+                "name": "Liga"
+            },
+            {
+                "addr": "M10.1",
+                "name": "Falha"
+            }
+        ]
+    },
+    {
+        "id": "531e1ad8cc0f30d0",
+        "type": "ui_group",
+        "name": "Produção",
+        "tab": "f28c8e3ad07d7a5e",
+        "order": 1,
+        "disp": true,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "3693543db8a26de2",
+        "type": "ui_group",
+        "name": "Falha",
+        "tab": "f28c8e3ad07d7a5e",
+        "order": 2,
+        "disp": true,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "5c7ec9b7acabec36",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.tago.io",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "eae27e11d83ca8bb",
+        "type": "ui_tab",
+        "name": "Planta de Industrial",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "f28c8e3ad07d7a5e",
+        "type": "ui_tab",
+        "name": "Controle",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    }
+]
